@@ -1,0 +1,32 @@
+PART 1. Dữ liệu (Luật)
+  1) Productions
+    R1: S02->D1
+    R2: S02->D2
+    R3: S11->D6
+    R4: S12->D3
+    R5: S16->D3
+    R6: S18->D4
+
+  2) Facts S01, S02, S04, S09.
+
+  3) Goal None
+
+PART 2. Suy Diễn
+  1 ITERATION
+    R1:S02->D1 được áp dụng. Cập nhật flag1. Facts S01, S02, S04, S09 suy ra D1.
+
+  2 ITERATION
+    R1:S02->D1 bỏ qua, vì flag1 đã được cập nhật.
+    R2:S02->D2 được áp dụng. Cập nhật flag1. Facts S01, S02, S04, S09 suy ra D1, D2.
+
+  3 ITERATION
+    R1:S02->D1 bỏ qua, vì flag1 đã được cập nhật.
+    R2:S02->D2 bỏ qua, vì flag1 đã được cập nhật.
+    R3:S11->D6 Không được áp dụng, vì thiếu fact: S11
+    R4:S12->D3 Không được áp dụng, vì thiếu fact: S12
+    R5:S16->D3 Không được áp dụng, vì thiếu fact: S16
+    R6:S18->D4 Không được áp dụng, vì thiếu fact: S18
+
+PART 3. Kết quả
+  1) Kết quả là : S01, S02, S04, S09, D1, D2 .
+  2) Đường đi suy diễn được là:R1, R2
