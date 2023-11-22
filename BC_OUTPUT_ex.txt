@@ -25,18 +25,16 @@ PART 1. Dữ liệu
     R23: S21->D6
 
   2) Triệu chứng người dùng mắc phải
-    S01, S02, S04, S09, S13.
+    S01, S02, S04, S09, S03.
 
   3) Bệnh nghi ngờ
     D1.
 
 PART 2. Suy diễn
   1) Goal D1. Tìm thấy luật R1:S03->D1. Các goals mới cần chứng mình là S03.
-  2) -Goal S03. Không có luật nào để suy diễn/không có triệu chứng này ban đầu. Trả về thất bại.
-  3) Goal D1. Tìm thấy luật R2:S04->D1. Các goals mới cần chứng mình là S04.
-  4) -Goal S04. Cập nhật triệu chứng S04, bởi vì được tìm thấy trong tập triệu chứng gốc S01, S02, S04, S09, S13. Trả về thành công.
-  5) ==>Goal D1. Đã được chứng minh, Trả về thành công
+  2) -Goal S03. Cập nhật triệu chứng S03, bởi vì được tìm thấy trong tập triệu chứng gốc S01, S02, S04, S09, S03. Trả về thành công.
+  3) ==>Goal D1. Đã được chứng minh, Trả về thành công
 
 PART 3. Kết quả
   1) Goal D1 được chứng minh.
-  2) Road: R2.
+  2) Road: R1.
