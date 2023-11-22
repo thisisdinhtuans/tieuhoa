@@ -2,36 +2,50 @@ PART 1. Dữ liệu (Luật)
   1) Productions
     R1: S08->D1
     R2: S09->D1
-    R3: S09->D2
-    R4: S09->D4
-    R5: S13->D1
+    R3: S13->D1
+    R4: S17->D1
+    R5: S09->D2
+    R6: S17->D2
+    R7: S01->D3
+    R8: S09->D4
+    R9: S01->D5
 
-  2) Facts S08, S09, S13, S17, S19.
+  2) Facts S08, S09, S13, S15, S16, S17.
 
   3) Goal None
 
 PART 2. Suy Diễn
   1 ITERATION
-    R1:S08->D1 được áp dụng. Cập nhật flag1. Facts S08, S09, S13, S17, S19 suy ra D1.
+    R1:S08->D1 được áp dụng. Cập nhật flag1. Facts S08, S09, S13, S15, S16, S17 suy ra D1.
 
   2 ITERATION
     R1:S08->D1 bỏ qua, vì flag1 đã được cập nhật.
     R2:S09->D1 không áp dụng, vì D1 nắm trong số các facts. Cập nhật flag2.
-    R3:S09->D2 được áp dụng. Cập nhật flag1. Facts S08, S09, S13, S17, S19 suy ra D1, D2.
+    R3:S13->D1 không áp dụng, vì D1 nắm trong số các facts. Cập nhật flag2.
+    R4:S17->D1 không áp dụng, vì D1 nắm trong số các facts. Cập nhật flag2.
+    R5:S09->D2 được áp dụng. Cập nhật flag1. Facts S08, S09, S13, S15, S16, S17 suy ra D1, D2.
 
   3 ITERATION
     R1:S08->D1 bỏ qua, vì flag1 đã được cập nhật.
     R2:S09->D1 bỏ qua, vì flag2 đã được cập nhật.
-    R3:S09->D2 bỏ qua, vì flag1 đã được cập nhật.
-    R4:S09->D4 được áp dụng. Cập nhật flag1. Facts S08, S09, S13, S17, S19 suy ra D1, D2, D4.
+    R3:S13->D1 bỏ qua, vì flag2 đã được cập nhật.
+    R4:S17->D1 bỏ qua, vì flag2 đã được cập nhật.
+    R5:S09->D2 bỏ qua, vì flag1 đã được cập nhật.
+    R6:S17->D2 không áp dụng, vì D2 nắm trong số các facts. Cập nhật flag2.
+    R7:S01->D3 Không được áp dụng, vì thiếu fact: S01
+    R8:S09->D4 được áp dụng. Cập nhật flag1. Facts S08, S09, S13, S15, S16, S17 suy ra D1, D2, D4.
 
   4 ITERATION
     R1:S08->D1 bỏ qua, vì flag1 đã được cập nhật.
     R2:S09->D1 bỏ qua, vì flag2 đã được cập nhật.
-    R3:S09->D2 bỏ qua, vì flag1 đã được cập nhật.
-    R4:S09->D4 bỏ qua, vì flag1 đã được cập nhật.
-    R5:S13->D1 không áp dụng, vì D1 nắm trong số các facts. Cập nhật flag2.
+    R3:S13->D1 bỏ qua, vì flag2 đã được cập nhật.
+    R4:S17->D1 bỏ qua, vì flag2 đã được cập nhật.
+    R5:S09->D2 bỏ qua, vì flag1 đã được cập nhật.
+    R6:S17->D2 bỏ qua, vì flag2 đã được cập nhật.
+    R7:S01->D3 Không được áp dụng, vì thiếu fact: S01
+    R8:S09->D4 bỏ qua, vì flag1 đã được cập nhật.
+    R9:S01->D5 Không được áp dụng, vì thiếu fact: S01
 
 PART 3. Kết quả
-  1) Kết quả là : S08, S09, S13, S17, S19, D1, D2, D4 .
-  2) Đường đi suy diễn được là:R1, R3, R4
+  1) Kết quả là : S08, S09, S13, S15, S16, S17, D1, D2, D4 .
+  2) Đường đi suy diễn được là:R1, R5, R8

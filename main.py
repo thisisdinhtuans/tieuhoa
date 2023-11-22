@@ -79,8 +79,8 @@ def first_question(list_symptom_of_person, person):
 
         if (answer == '0'):
             break
-        elif (int(answer) < 0 or int(answer) > 3):
-            print('-->Chatbot: Vui lòng nhập 1 số từ 0 tới 3')
+        elif (int(answer) < 0 or int(answer) > 4):
+            print('-->Chatbot: Vui lòng nhập 1 số từ 0 tới 4')
             continue
         else:
             list_symptom_of_person.append(AllSymLst[int(answer)-1])
