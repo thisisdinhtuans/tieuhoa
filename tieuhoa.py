@@ -6,7 +6,7 @@ import json
 # server = 'DESKTOP-L93D64G'
 # database = 'chatbot'
 server = 'DESKTOP-L93D64G'  # Tên máy chủ SQL Server
-database = 'chatbot'  # Tên cơ sở dữ liệu
+database = 'tieuhoa'  # Tên cơ sở dữ liệu
 # username = 'your_username'  # Tên người dùng SQL Server
 # password = 'your_password'  # Mật khẩu SQL Server
 

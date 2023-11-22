@@ -52,8 +52,8 @@ def welcome_question():
 #################################################################
 # 2. 1 số câu hỏi đầu tiên
 def first_question(list_symptom_of_person, person):
-    AllSymLst = [db.resulttrieutrung[0], db.resulttrieutrung[11],
-                 db.resulttrieutrung[12], db.resulttrieutrung[17]]
+    AllSymLst = [db.resulttrieutrung[0],db.resulttrieutrung[7], db.resulttrieutrung[8],
+                 db.resulttrieutrung[16]]
 
     NewAllSymLst = []
     for i in AllSymLst:
@@ -96,10 +96,10 @@ def first_question(list_symptom_of_person, person):
 def second_question(list_symptom_of_person, person):
     Location_StomachAcheSymLst = [db.resulttrieutrung[1]]
     while (1):
-        check = {'idtrieuchung': 'S01', 'noidung': 'Đau bụng'}
+        check = {'idtrieuchung': 'S08', 'noidung': 'Đau ê ẩm kéo dài, cảm giác nằng nặng vùng hạ sườn phải (viêm gan, utg, viêm túi mật)'}
         if (check in list_symptom_of_person):
-            print(f'-->Chatbot: {person.name} đang có triệu chứng ĐAU BỤNG- một trong số các triệu chứng của các bệnh về dạ dày.\n Để có chuẩn đoán chính xác, hãy cho tôi biết chi tiết thêm về vị trí đau')
-            print('1. Đau bụng vùng thượng vị (sau rốn)')
+            print(f'-->Chatbot: {person.name} đang có triệu chứng Đau ê ẩm kéo dài, cảm giác nằng nặng vùng hạ sườn phải (viêm gan, utg, viêm túi mật)- một trong số các triệu chứng của các bệnh về gan.\n Để có chuẩn đoán chính xác, hãy cho tôi biết chi tiết thêm về vị trí đau')
+            print('1. Trướng hơi, sôi bụng')
             print('0. Vị trí khác')
             print('---------------Câu trả lời của bạn---------------')
             answer = validate.validate_input_number_form(input())
@@ -130,19 +130,19 @@ def third_question(list_symptom_of_person, person):
     # for i in Frequency_StomachAcheSymLst:
     #     NewFrequency_StomachAcheSymLst.append(i.code)
     Frequency_StomachAcheSymLst = [
-        db.resulttrieutrung[2],
-        db.resulttrieutrung[3],
         db.resulttrieutrung[4],
         db.resulttrieutrung[5],
-        db.resulttrieutrung[6],
-        db.resulttrieutrung[7]
+        db.resulttrieutrung[10],
+        db.resulttrieutrung[11],
+        db.resulttrieutrung[12],
+        db.resulttrieutrung[14]
     ]
     while (1):
-        check = {'idtrieuchung': 'S01', 'noidung': 'Đau bụng'}
+        check = {'idtrieuchung': 'S01', 'noidung': 'Giảm, mất cảm giác ngon miệng, đắng miệng'}
         if (check in list_symptom_of_person):
 
             print(
-                f'-->Chatbot: Tiếp theo tôi muốn biết chi tiết hơn về tần suất đau bụng của {person.name}. (Lựa chọn vị trí đau bằng cách nhập số thứ tự)')
+                f'-->Chatbot: Tiếp theo tôi muốn biết chi tiết hơn về bệnh của {person.name}.')
             count = 1
             for i in Frequency_StomachAcheSymLst:
                 if (i not in list_symptom_of_person):
@@ -176,16 +176,17 @@ def forth_question_before_forward_inference(list_symptom_of_person, person):
     #    'S21'))), TreeForFC('S10', TreeForFC('S16', TreeForFC('S27'), TreeForFC('S26')), TreeForFC('S23', TreeForFC('S25'), TreeForFC('S28'))))
     
     initTree= TreeForFC(
-                        'S09',
+                        'S20',
                         TreeForFC(
-                            'S14',
-                            TreeForFC('S16',TreeForFC('S30'),TreeForFC('S20')),
-                            TreeForFC('S22',TreeForFC('S31'),TreeForFC('S21'))
-                        ),
+                            'S21',
+                            TreeForFC('S01',TreeForFC('S02'),TreeForFC('S13')),
+                            TreeForFC('S19',TreeForFC('S11'),TreeForFC('S16'))
+                        )
+                        ,
                         TreeForFC(
-                            'S10',
-                            TreeForFC('S17',TreeForFC('S11'),TreeForFC('S26')),
-                            TreeForFC('S27',TreeForFC('S12'),TreeForFC('S19'))
+                            'S22',
+                            TreeForFC('S13',TreeForFC('S01'),TreeForFC('S09')),
+                            TreeForFC('S06',TreeForFC('S23'),TreeForFC('S15'))
                         )
     )
     savedTree = initTree
@@ -248,7 +249,13 @@ def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,fil
         b=BackwardChaining(rule,fact_real,goal,file_name) # kết luận trong trường hợp các luât jtruwowsc đã suy ra đk luôn
         
         
-        
+        if b.result1==True:# đoạn đầu
+            print("Bạn mắc bệnh {}- {}và chúng tôi sẽ gửi thêm thông tin về bệnh này cho bạn qua mail".format(goal,D['tenBenh']))
+            print(f"Lời khuyên")
+            D['loikhuyen']=D['loikhuyen'].replace("/n","\n")
+            print(f"{D['loikhuyen']}")
+            print("Cám ơn bạn đã sử dụng chat bot của chúng tôi")
+            return goal,fact_real
         while(len(all_s_in_D)>0):
             s=db.get_trieuchung_by_id(all_s_in_D[0])
             question=f"Bạn có bị triệu chứng {s['noidung']}({all_s_in_D[0]}) không?"
@@ -257,14 +264,19 @@ def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,fil
             
             print(f"answer: {answer}")
             if answer== True :
+                benh=1
                 fact_real.append(all_s_in_D[0])
                 b=BackwardChaining(rule,fact_real,goal,file_name)
-                list_no_result,lsD=get_s_in_d(all_s_in_D[0],goal,rule,d,1)
-                d=sorted(set(d)-set(lsD))
-                all_s_in_D=sorted(set(list_no_result)-set(fact_real))
-                if b.result1==True:
-                    benh=1
-                    break
+                break
+                # fact_real.append(all_s_in_D[0])
+                # b=BackwardChaining(rule,fact_real,goal,file_name)
+                # list_no_result,lsD=get_s_in_d(all_s_in_D[0],goal,rule,d,1)
+                # d=sorted(set(d)-set(lsD))
+                # all_s_in_D=sorted(set(list_no_result)-set(fact_real))
+                # break
+                # # if b.result1==True:
+                # #     benh=1
+                # #     break
             if answer==False :
                 list_no_result,lsD=get_s_in_d(all_s_in_D[0],goal,rule,d,0) #S01 S02 S03 S04 S05
                 d=sorted(set(d)-set(lsD))
@@ -284,13 +296,6 @@ def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,fil
     if benh==0:
         print(f"Bạn không bị bệnh nào cả")
         return None, fact_real
-    if b.result1==True:# đoạn đầu
-            print("Bạn mắc bệnh {}- {}và chúng tôi sẽ gửi thêm thông tin về bệnh này cho bạn qua mail".format(goal,D['tenBenh']))
-            print(f"Lời khuyên")
-            D['loikhuyen']=D['loikhuyen'].replace("/n","\n")
-            print(f"{D['loikhuyen']}")
-            print("Cám ơn bạn đã sử dụng chat bot của chúng tôi")
-            return goal,fact_real
 
 
 #########################################################################
