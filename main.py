@@ -5,8 +5,6 @@ from backwardchaining import BackwardChaining
 from forwardchaining import ForwardChaining
 from tieuhoa import *
 from tieuhoa import ConvertData
-
-
 from email.message import EmailMessage
 import ssl,smtplib
 
@@ -22,12 +20,7 @@ db.getfc()
 db.getbc()
 luat_lui = db.groupbc()
 luat_tien = db.groupfc()
-
-
-
-
-#################################################
-# 1. câu hỏi chào hỏi
+# 1. câu chào hỏi từ chatbot
 def welcome_question():
     print("-->Chatbot: Xin chào, tôi là chatbot chuẩn đoán bệnh gan!")
     print("-->Chatbot: Để nhận lời khuyên và chuẩn đoán chi tiết, hãy để lại email, tên và số điện thoại của bạn")
@@ -47,9 +40,6 @@ def welcome_question():
     print(person)
     return person
 
-
-
-#################################################################
 # 2. 1 số câu hỏi đầu tiên
 def first_question(list_symptom_of_person, person):
     AllSymLst = [db.resulttrieutrung[0],db.resulttrieutrung[7], db.resulttrieutrung[8],
@@ -79,8 +69,8 @@ def first_question(list_symptom_of_person, person):
 
         if (answer == '0'):
             break
-        elif (int(answer) < 0 or int(answer) > 3):
-            print('-->Chatbot: Vui lòng nhập 1 số từ 0 tới 3')
+        elif (int(answer) < 0 or int(answer) > 4):
+            print('-->Chatbot: Vui lòng nhập 1 số từ 0 tới 4')
             continue
         else:
             list_symptom_of_person.append(AllSymLst[int(answer)-1])
@@ -89,16 +79,13 @@ def first_question(list_symptom_of_person, person):
         print([i['idtrieuchung'] for i in list_symptom_of_person])
     return list_symptom_of_person
 
-
-
-#############################################################
-# 3. Câu hỏi thứ 2 ( về vị trí)
+# 3. Câu hỏi thứ 2
 def second_question(list_symptom_of_person, person):
     Location_StomachAcheSymLst = [db.resulttrieutrung[0]]
     while (1):
-        check = {'idtrieuchung': 'S08', 'noidung': 'Đau ê ẩm kéo dài, cảm giác nằng nặng vùng hạ sườn phải (viêm gan, utg, viêm túi mật)'}
+        check = {'idtrieuchung': 'S18', 'noidung': 'Tĩnh mạch cổ nổi lên bất thường)'}
         if (check in list_symptom_of_person):
-            print(f'-->Chatbot: {person.name} Đau ê ẩm kéo dài, cảm giác nằng nặng vùng hạ sườn phải (viêm gan, utg, viêm túi mật).\n Để có chuẩn đoán chính xác, hãy cho tôi biết thêm')
+            print(f'-->Chatbot: {person.name} Tĩnh mạch cổ nổi lên bất thường).\n Để có chuẩn đoán chính xác, hãy cho tôi biết thêm')
             print('1. Giảm, mất cảm giác ngon miệng, đắng miệng')
             print('0. Không phải')
             print('---------------Câu trả lời của bạn---------------')
@@ -119,69 +106,10 @@ def second_question(list_symptom_of_person, person):
     print(f'-->Chatbot: Danh sách mã các triệu chứng {person.name} đang mắc:',
           [i['idtrieuchung'] for i in list_symptom_of_person])
     return list_symptom_of_person
-# def second_question(list_symptom_of_person, person):
-#     Location_StomachAcheSymLst = [db.resulttrieutrung[0]]
-#     while (1):
-#         check = {'idtrieuchung': 'S01', 'noidung': 'Giảm, mất cảm giác ngon miệng, đắng miệng'}
-#         if (check in list_symptom_of_person):
-#             print(f'-->Chatbot: {person.name} đang có triệu chứng Giảm, mất cảm giác ngon miệng, đắng miệng- một trong số các triệu chứng của các bệnh về gan.\n Để có chuẩn đoán chính xác, hãy cho tôi biết chi tiết thêm về vị trí đau')
-#             print('1. Giảm, mất cảm giác ngon miệng, đắng miệng')
-#             print('0. Vị trí khác')
-#             print('---------------Câu trả lời của bạn---------------')
-#             answer = validate.validate_input_number_form(input())
-#             # print("Người dùng: Lựa chọn của tôi ", answer)
-#             print(f'-->{person.name}: Lựa chọn của tôi {answer}')
-#             if (int(answer) < 0 or int(answer) > 1):
-#                 print('-->Chatbot: Vui lòng nhập số từ 0 -> 1')
-#                 continue
-#             elif (answer == '0'):
-#                 break
-#             else:
-#                 list_symptom_of_person.append(Location_StomachAcheSymLst[0])
-#                 break
-#         else:
-#             break
 
-
-#     print(f'-->Chatbot: Danh sách mã các triệu chứng {person.name} đang mắc:',
-#           [i['idtrieuchung'] for i in list_symptom_of_person])
-#     return list_symptom_of_person
-# def second_question(list_symptom_of_person, person):
-#     Location_StomachAcheSymLst = [db.resulttrieutrung[1]]
-#     while (1):
-#         check = {'idtrieuchung': 'S01', 'noidung': 'Đau bụng'}
-#         if (check in list_symptom_of_person):
-#             print(f'-->Chatbot: {person.name} đang có triệu chứng ĐAU BỤNG- một trong số các triệu chứng của các bệnh về dạ dày.\n Để có chuẩn đoán chính xác, hãy cho tôi biết chi tiết thêm về vị trí đau')
-#             print('1. Đau khu trú vùng hạ sường phải hoặc thượng vị (trên rốn)')
-#             print('0. Vị trí khác')
-#             print('---------------Câu trả lời của bạn---------------')
-#             answer = validate.validate_input_number_form(input())
-#             # print("Người dùng: Lựa chọn của tôi ", answer)
-#             print(f'-->{person.name}: Lựa chọn của tôi {answer}')
-#             if (int(answer) < 0 or int(answer) > 1):
-#                 print('-->Chatbot: Vui lòng nhập số từ 0 -> 1')
-#                 continue
-#             elif (answer == '0'):
-#                 break
-#             else:
-#                 list_symptom_of_person.append(Location_StomachAcheSymLst[0])
-#                 break
-#         else:
-#             break
-
-#     print(f'-->Chatbot: Danh sách mã các triệu chứng {person.name} đang mắc:',
-#           [i['idtrieuchung'] for i in list_symptom_of_person])
-#     return list_symptom_of_person
-
-
-
-
-########################################################
-# 4. Câu hỏi thứ 3 về tần suất đau
+# 4. Câu hỏi thứ 3
 def third_question(list_symptom_of_person, person):
     NewFrequency_StomachAcheSymLst = []
-    # for i in Frequency_StomachAcheSymLst:
-    #     NewFrequency_StomachAcheSymLst.append(i.code)
 
     Frequency_StomachAcheSymLst = [
         db.resulttrieutrung[1],
@@ -192,20 +120,12 @@ def third_question(list_symptom_of_person, person):
         db.resulttrieutrung[12],
         db.resulttrieutrung[14]
     ]
-    # Frequency_StomachAcheSymLst = [
-    #     db.resulttrieutrung[0],
-    #     db.resulttrieutrung[1],
-    #     db.resulttrieutrung[2],
-    #     db.resulttrieutrung[3],
-    #     db.resulttrieutrung[5],
-    #     db.resulttrieutrung[6]
-    # ]
     while (1):
         check = {'idtrieuchung': 'S01', 'noidung': 'Giảm, mất cảm giác ngon miệng, đắng miệng'}
         if (check in list_symptom_of_person):
 
-            print(
-                f'-->Chatbot: Tiếp theo tôi muốn biết chi tiết hơn về dấu hiệu của {person.name}. (Lựa chọn vị trí đau bằng cách nhập số thứ tự)')
+            # print(
+            #     f'-->Chatbot: Tiếp theo tôi muốn biết chi tiết hơn về dấu hiệu của {person.name}. (Lựa chọn vị trí đau bằng cách nhập số thứ tự)')
             count = 1
             for i in Frequency_StomachAcheSymLst:
                 if (i not in list_symptom_of_person):
@@ -229,43 +149,24 @@ def third_question(list_symptom_of_person, person):
             break
     return list_symptom_of_person
 
-
-
-
-#################################################################
-# 5. kịch bản câu hỏi phụ trợ để suy diễn tiến
+# 5. câu hỏi phụ trợ để suy diễn tiến
 def forth_question_before_forward_inference(list_symptom_of_person, person):
-   # initTree = TreeForFC('S09', TreeForFC('S14', TreeForFC('S11', TreeForFC('S30'), TreeForFC('S27')), TreeForFC('S22', TreeForFC('S24'), TreeForFC(
-    #    'S21'))), TreeForFC('S10', TreeForFC('S16', TreeForFC('S27'), TreeForFC('S26')), TreeForFC('S23', TreeForFC('S25'), TreeForFC('S28'))))
-    
-
+    #D05
     initTree= TreeForFC(
-                        'S13',
+                        'S20',
                         TreeForFC(
-                            'S17',
-                            TreeForFC('S19',TreeForFC('S09'),TreeForFC('S16')),
-                            TreeForFC('S16',TreeForFC('S15'),TreeForFC('S23'))
+                            'S21',
+                            TreeForFC('S01',TreeForFC('S02'),TreeForFC('S13')),
+                            TreeForFC('S19',TreeForFC('S11'),TreeForFC('S16'))
                         )
                         ,
                         TreeForFC(
-                            'S11',
-                            TreeForFC('S12',TreeForFC('S19'),TreeForFC('S22')),
-                            TreeForFC('S20',TreeForFC('S21'),TreeForFC('S15'))
+                            'S22',
+                            TreeForFC('S13',TreeForFC('S01'),TreeForFC('S09')),
+                            TreeForFC('S06',TreeForFC('S23'),TreeForFC('S15'))
                         )
     )
-    # initTree= TreeForFC(
-    #                     'S10',
-    #                     TreeForFC(
-    #                         'S12',
-    #                         TreeForFC('S13',TreeForFC('S30'),TreeForFC('S20')),
-    #                         TreeForFC('S22',TreeForFC('S31'),TreeForFC('S21'))
-    #                     ),
-    #                     TreeForFC(
-    #                         'S11',
-    #                         TreeForFC('S17',TreeForFC('S11'),TreeForFC('S26')),
-    #                         TreeForFC('S27',TreeForFC('S12'),TreeForFC('S19'))
-    #                     )
-    # )
+    
     savedTree = initTree
 
     for i in range(0, 4):
@@ -284,10 +185,7 @@ def forth_question_before_forward_inference(list_symptom_of_person, person):
 
     return list_symptom_of_person
 
-
-
-
-################################################################
+# 6 suy diễn tiến
 def forward_chaining(rule, fact, goal, file_name,person):
     fc = ForwardChaining(rule, fact, None, file_name)
 
@@ -303,10 +201,6 @@ def forward_chaining(rule, fact, goal, file_name,person):
         f'-->Chatbot: Trên đây là chuẩn đoán sơ bộ của chúng tôi. Tiếp theo, chúng tôi sẽ hỏi {person.name} một số câu hỏi để đưa ra kết quả chính xác.', end=" ")
     return list_predicted_disease
 
-
-
-
-########################################################################
 # 7 phần suy diễn lùi
 def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,file_name ):
     predictD=list_predicted_disease
@@ -324,7 +218,13 @@ def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,fil
         
         b=BackwardChaining(rule,fact_real,goal,file_name) # kết luận trong trường hợp các luât jtruwowsc đã suy ra đk luôn
         
-        
+        if b.result1==True:# đoạn đầu
+            print("Bạn mắc bệnh {}- {}và chúng tôi sẽ gửi thêm thông tin về bệnh này cho bạn qua mail".format(goal,D['tenBenh']))
+            print(f"Lời khuyên")
+            D['loikhuyen']=D['loikhuyen'].replace("/n","\n")
+            print(f"{D['loikhuyen']}")
+            print("Cám ơn bạn đã sử dụng chat bot của chúng tôi")
+            return goal,fact_real
         
         while(len(all_s_in_D)>0):
             s=db.get_trieuchung_by_id(all_s_in_D[0])
@@ -349,28 +249,19 @@ def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,fil
             if len(d)==0: 
                 print(f"Có vẻ như bạn không mắc bệnh {goal}-{D['tenBenh']}")
                 break
-    #     if benh==0:
-    #         print("Bạn mắc bệnh {}- {} , và chúng tôi sẽ gửi thêm thông tin về bệnh này cho bạn qua mail".format(goal,D['tenBenh']))
-    #         print(f"Lời khuyên")
-    #         D['loikhuyen']=D['loikhuyen'].replace("/n","\n")
-    #         print(f"{D['loikhuyen']}")
-    #         print("Cám ơn bạn đã sử dụng chat bot của chúng tôi")
-            
-    #         return goal,fact_real
-    #         break
-    # if benh==1:
-    #     print(f"Bạn không bị bệnh nào cả")
-    #     return None, fact_real
-    if b.result1==True:# đoạn đầu
-            print("Bạn mắc bệnh {}- {}và chúng tôi sẽ gửi thêm thông tin về bệnh này cho bạn qua mail".format(goal,D['tenBenh']))
+        if benh==1:
+            print("Bạn mắc bệnh {}- {} , và chúng tôi sẽ gửi thêm thông tin về bệnh này cho bạn qua mail".format(goal,D['tenBenh']))
             print(f"Lời khuyên")
             D['loikhuyen']=D['loikhuyen'].replace("/n","\n")
             print(f"{D['loikhuyen']}")
             print("Cám ơn bạn đã sử dụng chat bot của chúng tôi")
+            
             return goal,fact_real
+            break
+    if benh==0:
+        print(f"Bạn không bị bệnh nào cả")
+        return None, fact_real
 
-
-#########################################################################
 #8 Gửi thông tin qua email
 def send_email(list_symptom_of_person_id,id_benh,person):
     email_sender = 'guzamo60@gmail.com'
@@ -410,7 +301,6 @@ def send_email(list_symptom_of_person_id,id_benh,person):
     except:
         print("email không tồn tại")
     
-
 person = welcome_question()
 list_symptom_of_person = []  # list các đối tượng triệu chứng
 

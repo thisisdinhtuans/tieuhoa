@@ -7,7 +7,8 @@ class Rule:
         self.flag2 = False
         # self.r=r
 
-    def follows(self, facts):# facts là các triệu chứng đã có
+    def follows(self, facts):
+        # facts là các triệu chứng đã có
         for fact in self.left: # cho từng luật ở vế trái
             if fact not in facts: # nếu như luật đó ko tồn tại trong facts ban đầu
                 return fact # thì trả về cái luật đó
@@ -36,7 +37,8 @@ class BackwardChaining:
         self.print_result(result)
 
         self.write_output(file_name)
-    def do_backward_chaining(self, goal, indent=""):# trả về giá trị true false caajp0 nhật cho result
+    def do_backward_chaining(self, goal, indent=""):
+        # trả về giá trị true false caajp0 nhật cho result
         ls=0 # Biến điều kiện, nếu ls==0 thì không có luật nào phù hợp với goal và fact thì trả về false
         for rule in self.rules:
             # ls=0
@@ -70,7 +72,8 @@ class BackwardChaining:
             return True
     # def get_s_in_fact(self):
 
-    def print_step(self, goal, indent, msg):#indent : dấu gạch ngang
+    def print_step(self, goal, indent, msg):
+        #indent : dấu gạch ngang
         self.iteration += 1
         self.output += str(self.iteration).rjust(3, " ") + ") %sGoal %s. " % (indent, goal) + msg + "\n"
 
@@ -128,7 +131,8 @@ class BackwardChaining:
         self.output += "\n  2) Triệu chứng người dùng mắc phải\n    %s.\n\n" % ", ".join(facts)
         self.output += "  3) Bệnh nghi ngờ\n    %s.\n\n" % goal
 
-    def print_result(self, result): # part 3
+    def print_result(self, result): 
+        # part 3
         if result is not False:
 
             if len(self.road) == 0:

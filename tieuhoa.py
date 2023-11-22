@@ -3,35 +3,13 @@ import pyodbc
 import json
 
 # Thay đổi thông tin kết nối SQL Server
-# server = 'DESKTOP-L93D64G'
-# database = 'chatbot'
 server = 'DESKTOP-L93D64G'  # Tên máy chủ SQL Server
 database = 'tieuhoa'  # Tên cơ sở dữ liệu
-# username = 'your_username'  # Tên người dùng SQL Server
-# password = 'your_password'  # Mật khẩu SQL Server
-
 # Tạo chuỗi kết nối
 conn_str = f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database}'
-
 # Kết nối đến SQL Server
 mydb = pyodbc.connect(conn_str)
-
 print("Kết nối đến SQL Server thành công")
-# # Thực hiện kết nối đến SQL Server
-# try:
-#     connection = pyodbc.connect(f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database}')
-#     cursor = connection.cursor()
-#     print("Kết nối đến SQL Server thành công")
-
-#     # Thực hiện các thao tác với cơ sở dữ liệu ở đây
-
-# except Exception as e:
-#     print(f"Lỗi kết nối: {str(e)}")
-# finally:
-#     if 'connection' in locals():
-#         connection.close()
-#         print("Đã đóng kết nối")
-
 
 class ConvertData:
     """
@@ -209,7 +187,6 @@ class ConvertData:
                 return i
         return 0
 
-    
 
 class Validate:
     def __init__(self) -> None:
