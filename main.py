@@ -26,8 +26,7 @@ luat_tien = db.groupfc()
 
 
 
-#################################################
-# 1. câu hỏi chào hỏi
+# 1. câu chào hỏi từ chatbot
 def welcome_question():
     print("-->Chatbot: Xin chào, tôi là chatbot chuẩn đoán bệnh gan!")
     print("-->Chatbot: Để nhận lời khuyên và chuẩn đoán chi tiết, hãy để lại email, tên và số điện thoại của bạn")
@@ -49,7 +48,6 @@ def welcome_question():
 
 
 
-#################################################################
 # 2. 1 số câu hỏi đầu tiên
 def first_question(list_symptom_of_person, person):
     AllSymLst = [db.resulttrieutrung[0],db.resulttrieutrung[7], db.resulttrieutrung[8],
@@ -91,8 +89,7 @@ def first_question(list_symptom_of_person, person):
 
 
 
-#############################################################
-# 3. Câu hỏi thứ 2 ( về vị trí)
+# 3. Câu hỏi thứ 2
 def second_question(list_symptom_of_person, person):
     Location_StomachAcheSymLst = [db.resulttrieutrung[1]]
     while (1):
@@ -123,8 +120,7 @@ def second_question(list_symptom_of_person, person):
 
 
 
-########################################################
-# 4. Câu hỏi thứ 3 về tần suất đau
+# 4. Câu hỏi thứ 3
 def third_question(list_symptom_of_person, person):
     NewFrequency_StomachAcheSymLst = []
     # for i in Frequency_StomachAcheSymLst:
@@ -169,8 +165,7 @@ def third_question(list_symptom_of_person, person):
 
 
 
-#################################################################
-# 5. kịch bản câu hỏi phụ trợ để suy diễn tiến
+# 5. câu hỏi phụ trợ để suy diễn tiến
 def forth_question_before_forward_inference(list_symptom_of_person, person):
    # initTree = TreeForFC('S09', TreeForFC('S14', TreeForFC('S11', TreeForFC('S30'), TreeForFC('S27')), TreeForFC('S22', TreeForFC('S24'), TreeForFC(
     #    'S21'))), TreeForFC('S10', TreeForFC('S16', TreeForFC('S27'), TreeForFC('S26')), TreeForFC('S23', TreeForFC('S25'), TreeForFC('S28'))))
@@ -210,8 +205,7 @@ def forth_question_before_forward_inference(list_symptom_of_person, person):
 
 
 
-################################################################
-# 6 phần suy diễn tiến
+# 6 suy diễn tiến
 def forward_chaining(rule, fact, goal, file_name,person):
     fc = ForwardChaining(rule, fact, None, file_name)
 
@@ -230,7 +224,7 @@ def forward_chaining(rule, fact, goal, file_name,person):
 
 
 
-########################################################################
+
 # 7 phần suy diễn lùi
 def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,file_name ):
     predictD=list_predicted_disease
@@ -249,7 +243,8 @@ def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,fil
         b=BackwardChaining(rule,fact_real,goal,file_name) # kết luận trong trường hợp các luât jtruwowsc đã suy ra đk luôn
         
         
-        if b.result1==True:# đoạn đầu
+        # if b.result1==True:# đoạn đầu
+        if len(all_s_in_D)==0:
             print("Bạn mắc bệnh {}- {}và chúng tôi sẽ gửi thêm thông tin về bệnh này cho bạn qua mail".format(goal,D['tenBenh']))
             print(f"Lời khuyên")
             D['loikhuyen']=D['loikhuyen'].replace("/n","\n")
@@ -281,6 +276,43 @@ def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,fil
                 list_no_result,lsD=get_s_in_d(all_s_in_D[0],goal,rule,d,0) #S01 S02 S03 S04 S05
                 d=sorted(set(d)-set(lsD))
                 all_s_in_D=sorted(set(list_no_result)-set(fact_real))
+            # if answer== True :
+            #     if len(all_s_in_D)==0:
+            #         benh=1
+            #         fact_real.append(all_s_in_D[0])
+            #         b=BackwardChaining(rule,fact_real,goal,file_name)
+            #         break
+            #     else: 
+            #         fact_real.append(all_s_in_D[0])
+            #         b=BackwardChaining(rule,fact_real,goal,file_name)
+            #         list_no_result,lsD=get_s_in_d(all_s_in_D[0],goal,rule,d,1)
+            #         d=sorted(set(d)-set(lsD))
+            #         # print(d)
+            #         all_s_in_D=sorted(set(list_no_result)-set(fact_real))
+            #         continue
+                # # benh=1
+                # # fact_real.append(all_s_in_D[0])
+                # # b=BackwardChaining(rule,fact_real,goal,file_name)
+                # # break
+                # fact_real.append(all_s_in_D[0])
+                # b=BackwardChaining(rule,fact_real,goal,file_name)
+                # list_no_result,lsD=get_s_in_d(all_s_in_D[0],goal,rule,d,1)
+                # d=sorted(set(d)-set(lsD))
+                # # print(d)
+                # all_s_in_D=sorted(set(list_no_result)-set(fact_real))
+                # # print(all_s_in_D)
+                # print(len(all_s_in_D))
+                # # break
+                # if len(all_s_in_D)==0:
+                #     benh=0
+                #     continue
+                # elif b.result1==True:
+                #     benh=1
+                #     break
+            # if answer==False :
+            #     list_no_result,lsD=get_s_in_d(all_s_in_D[0],goal,rule,d,0) #S01 S02 S03 S04 S05
+            #     d=sorted(set(d)-set(lsD))
+            #     all_s_in_D=sorted(set(list_no_result)-set(fact_real))
             if len(d)==0: 
                 print(f"Có vẻ như bạn không mắc bệnh {goal}-{D['tenBenh']}")
                 break
@@ -298,7 +330,6 @@ def backward_chaining(luat_lui,list_symptom_of_person,list_predicted_disease,fil
         return None, fact_real
 
 
-#########################################################################
 #8 Gửi thông tin qua email
 def send_email(list_symptom_of_person_id,id_benh,person):
     email_sender = 'guzamo60@gmail.com'
@@ -312,15 +343,15 @@ def send_email(list_symptom_of_person_id,id_benh,person):
     loi_khuyen=benh['loikhuyen']
     subject='Medical records'
     body=f"""
-        ***Xin chào {person.name}
-        ***Chúng tôi nhận được các triệu chứng bạn đã gặp phải là : 
+        Xin chào {person.name}
+        Chúng tôi nhận được các triệu chứng bạn đã gặp phải là : 
         {[db.get_trieuchung_by_id(i)["noidung"] for i in list_symptom_of_person_id]}
-        ***Chúng tôi dự đoán bạn bị bệnh : {benh['tenBenh']}
-        ***Nguyên nhân gây ra bệnh này là: 
+        Chúng tôi dự đoán bạn bị bệnh : {benh['tenBenh']}
+        Nguyên nhân gây ra bệnh này là: 
         {nguyen_nhan}
-        ***Lời khuyên của chúng tôi dành cho bạn:
+        Lời khuyên của chúng tôi dành cho bạn:
         {loi_khuyen}
-        ***Cám ơn vì đã dùng Chatbot
+        Cám ơn vì đã dùng Chatbot
     """
     # print(body)
     
